@@ -28,34 +28,42 @@ function Booking() {
   const totalPrice =
     event.price * tickets;
 
-const handleBooking = () => {
-  const booking = {
-    id: Date.now(),
-    eventId: event.id,
-    title: event.title,
-    location: event.location,
-    date: event.date,
-    tickets,
-    totalPrice,
-  };
+ const handleBooking = () => {
+    if (tickets < 1) {
+        alert(
+        "Number of tickets must be at least 1"
+        );
+        return;
+    }
 
-  const oldBookings =
-    JSON.parse(
-      localStorage.getItem("bookings")
-    ) || [];
+    const booking = {
+        id: Date.now(),
+        eventId: event.id,
+        title: event.title,
+        location: event.location,
+        date: event.date,
+        tickets,
+        totalPrice,
+    };
 
-  localStorage.setItem(
-    "bookings",
-    JSON.stringify([
-      ...oldBookings,
-      booking,
-    ])
-  );
+    const oldBookings =
+        JSON.parse(
+        localStorage.getItem("bookings")
+        ) || [];
 
-  alert(
-    "Booking Confirmed Successfully"
-  );
-};  
+    localStorage.setItem(
+        "bookings",
+        JSON.stringify([
+        ...oldBookings,
+        booking,
+        ])
+    );
+
+    alert(
+        "Booking Confirmed Successfully"
+    );
+ };
+
 
   return (
     <Container maxWidth="md" sx={{ mt: 5 }}>
@@ -91,17 +99,24 @@ const handleBooking = () => {
             {event.description}
           </Typography>
 
-          <TextField
+        <TextField
             type="number"
             label="Tickets"
             value={tickets}
-            onChange={(e) =>
-              setTickets(
-                Number(e.target.value)
-              )
-            }
+            slotProps={{
+                htmlInput: {
+                min: 1,
+                },
+            }}
+            onChange={(e) => {
+                const value = Number(e.target.value);
+
+                if (value >= 1) {
+                setTickets(value);
+                }
+            }}
             sx={{ mb: 3 }}
-          />
+         />
 
           <Typography
             variant="h5"
