@@ -1,0 +1,126 @@
+import { useParams } from "react-router-dom";
+import { events } from "../../data/events";
+import { useState } from "react";
+
+import {
+  Container,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+} from "@mui/material";
+
+function Booking() {
+  const { id } = useParams();
+
+  const event = events.find(
+    (e) => e.id === Number(id)
+  );
+
+  const [tickets, setTickets] = useState(1);
+
+  if (!event) {
+    return <h2>Event Not Found</h2>;
+  }
+
+  const totalPrice =
+    event.price * tickets;
+
+const handleBooking = () => {
+  const booking = {
+    id: Date.now(),
+    eventId: event.id,
+    title: event.title,
+    location: event.location,
+    date: event.date,
+    tickets,
+    totalPrice,
+  };
+
+  const oldBookings =
+    JSON.parse(
+      localStorage.getItem("bookings")
+    ) || [];
+
+  localStorage.setItem(
+    "bookings",
+    JSON.stringify([
+      ...oldBookings,
+      booking,
+    ])
+  );
+
+  alert(
+    "Booking Confirmed Successfully"
+  );
+};  
+
+  return (
+    <Container maxWidth="md" sx={{ mt: 5 }}>
+      <Card>
+        <CardMedia
+          component="img"
+          height="350"
+          image={event.image}
+          alt={event.title}
+        />
+
+        <CardContent>
+          <Typography
+            variant="h3"
+            gutterBottom
+          >
+            {event.title}
+          </Typography>
+
+          <Typography>
+            📍 {event.location}
+          </Typography>
+
+          <Typography>
+            📅 {event.date}
+          </Typography>
+
+          <Typography sx={{ mb: 3 }}>
+            💰 {event.price} EGP
+          </Typography>
+
+          <Typography sx={{ mb: 2 }}>
+            {event.description}
+          </Typography>
+
+          <TextField
+            type="number"
+            label="Tickets"
+            value={tickets}
+            onChange={(e) =>
+              setTickets(
+                Number(e.target.value)
+              )
+            }
+            sx={{ mb: 3 }}
+          />
+
+          <Typography
+            variant="h5"
+            sx={{ mb: 3 }}
+          >
+            Total Price: {totalPrice} EGP
+          </Typography>
+
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleBooking}
+            >
+            Confirm Booking
+          </Button>
+        </CardContent>
+      </Card>
+    </Container>
+  );
+}
+
+export default Booking;
