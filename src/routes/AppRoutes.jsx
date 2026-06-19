@@ -7,6 +7,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Booking from "../pages/Booking/Booking";
 import Bookings from "../pages/Bookings/Bookings";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
   return (
@@ -16,8 +17,16 @@ function AppRoutes() {
       <Route path="/events/:id" element={<EventDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/book-event/:id" element={<Booking />} />
-      <Route path="/bookings" element={<Bookings />} />
+      <Route path="/booking/:id" element={<Booking />} />
+
+      <Route
+        path="/bookings"
+        element={
+          <ProtectedRoute>
+            <Bookings />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
