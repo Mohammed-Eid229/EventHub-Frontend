@@ -6,18 +6,20 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/authService";
 
 function Login() {
   const navigate = useNavigate();
 
-  const [email, setEmail] =
-    useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [password, setPassword] =
-    useState("");
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = () => {
     const result = loginUser(
@@ -26,13 +28,18 @@ function Login() {
     );
 
     if (!result.success) {
-      alert("Invalid Credentials");
+      setError(
+        "Invalid Email or Password"
+      );
       return;
     }
 
-    alert("Login Successful");
+    setError("");
+    setOpen(true);
 
-    navigate("/");
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   return (
@@ -73,6 +80,28 @@ function Login() {
       >
         Login
       </Button>
+
+      {error && (
+        <Alert
+          severity="error"
+          sx={{ mt: 2 }}
+        >
+          {error}
+        </Alert>
+      )}
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          severity="success"
+          variant="filled"
+        >
+          Login Successful
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

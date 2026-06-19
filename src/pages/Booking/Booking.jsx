@@ -12,6 +12,9 @@ import {
   Button,
 } from "@mui/material";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 function Booking() {
   const { id } = useParams();
 
@@ -19,7 +22,11 @@ function Booking() {
     (e) => e.id === Number(id)
   );
 
-  const [tickets, setTickets] = useState(1);
+  const [tickets, setTickets] =
+    useState(1);
+
+  const [open, setOpen] =
+    useState(false);
 
   if (!event) {
     return <h2>Event Not Found</h2>;
@@ -28,51 +35,56 @@ function Booking() {
   const totalPrice =
     event.price * tickets;
 
- const handleBooking = () => {
+  const handleBooking = () => {
     if (tickets < 1) {
-        alert(
+      alert(
         "Number of tickets must be at least 1"
-        );
-        return;
+      );
+      return;
     }
 
     const currentUser = JSON.parse(
-        localStorage.getItem("currentUser")
+      localStorage.getItem(
+        "currentUser"
+      )
     );
 
     const booking = {
-        id: Date.now(),
-        userEmail: currentUser.email,
+      id: Date.now(),
+      userEmail:
+        currentUser.email,
 
-        eventId: event.id,
-        title: event.title,
-        location: event.location,
-        date: event.date,
-        tickets,
-        totalPrice,
+      eventId: event.id,
+      title: event.title,
+      location: event.location,
+      date: event.date,
+      tickets,
+      totalPrice,
     };
 
     const oldBookings =
-        JSON.parse(
-        localStorage.getItem("bookings")
-        ) || [];
+      JSON.parse(
+        localStorage.getItem(
+          "bookings"
+        )
+      ) || [];
 
     localStorage.setItem(
-        "bookings",
-        JSON.stringify([
+      "bookings",
+      JSON.stringify([
         ...oldBookings,
         booking,
-        ])
+      ])
     );
 
-    alert(
-        "Booking Confirmed Successfully"
-    );
- };
-
+    setOpen(true);
+  };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 5 }}>
+    <Container
+      maxWidth="md"
+      sx={{ mt: 5 }}
+    >
       <Card>
         <CardMedia
           component="img"
@@ -97,49 +109,77 @@ function Booking() {
             📅 {event.date}
           </Typography>
 
-          <Typography sx={{ mb: 3 }}>
+          <Typography
+            sx={{ mb: 3 }}
+          >
             💰 {event.price} EGP
           </Typography>
 
-          <Typography sx={{ mb: 2 }}>
+          <Typography
+            sx={{ mb: 2 }}
+          >
             {event.description}
           </Typography>
 
-        <TextField
+          <TextField
             type="number"
             label="Tickets"
             value={tickets}
             slotProps={{
-                htmlInput: {
+              htmlInput: {
                 min: 1,
-                },
+              },
             }}
             onChange={(e) => {
-                const value = Number(e.target.value);
+              const value =
+                Number(
+                  e.target.value
+                );
 
-                if (value >= 1) {
+              if (value >= 1) {
                 setTickets(value);
-                }
+              }
             }}
             sx={{ mb: 3 }}
-         />
+          />
 
           <Typography
             variant="h5"
             sx={{ mb: 3 }}
           >
-            Total Price: {totalPrice} EGP
+            Total Price:
+            {" "}
+            {totalPrice}
+            {" "}
+            EGP
           </Typography>
 
           <Button
             variant="contained"
             size="large"
-            onClick={handleBooking}
-            >
+            onClick={
+              handleBooking
+            }
+          >
             Confirm Booking
           </Button>
         </CardContent>
       </Card>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() =>
+          setOpen(false)
+        }
+      >
+        <Alert
+          severity="success"
+          variant="filled"
+        >
+          Booking Confirmed Successfully
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

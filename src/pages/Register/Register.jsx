@@ -6,6 +6,9 @@ import {
   Typography,
 } from "@mui/material";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authService";
 
@@ -21,6 +24,9 @@ function Register() {
   const [password, setPassword] =
     useState("");
 
+  const [open, setOpen] =
+    useState(false);
+
   const handleRegister = () => {
     const result = registerUser({
       fullName,
@@ -33,9 +39,11 @@ function Register() {
       return;
     }
 
-    alert("Registered Successfully");
+    setOpen(true);
 
-    navigate("/login");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500);
   };
 
   return (
@@ -86,6 +94,19 @@ function Register() {
       >
         Register
       </Button>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          severity="success"
+          variant="filled"
+        >
+          Registered Successfully
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
