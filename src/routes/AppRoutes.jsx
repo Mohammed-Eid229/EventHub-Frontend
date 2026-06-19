@@ -9,6 +9,8 @@ import Booking from "../pages/Booking/Booking";
 import Bookings from "../pages/Bookings/Bookings";
 import ProtectedRoute from "./ProtectedRoute";
 import Profile from "../pages/Profile/Profile";
+import Admin from "../pages/Admin/Admin";
+import AddEvent from "../pages/AddEvent/AddEvent";
 
 function AppRoutes() {
   return (
@@ -19,6 +21,7 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/book-event/:id" element={<Booking />} />
+      
 
       <Route
         path="/bookings"
@@ -35,6 +38,18 @@ function AppRoutes() {
             <Profile />
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/admin"
+        element={         
+        <ProtectedRoute>
+          <Admin />
+        </ProtectedRoute>
+        }
+      />  
+      <Route
+        path="/admin/add-event"
+        element={<AddEvent />}
       />
     </Routes>
   );
