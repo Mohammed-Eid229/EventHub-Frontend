@@ -8,6 +8,7 @@ import Register from "../pages/Register/Register";
 import Booking from "../pages/Booking/Booking";
 import Bookings from "../pages/Bookings/Bookings";
 import ProtectedRoute from "./ProtectedRoute";
+import Profile from "../pages/Profile/Profile";
 
 function AppRoutes() {
   return (
@@ -24,6 +25,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Bookings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         }
       />

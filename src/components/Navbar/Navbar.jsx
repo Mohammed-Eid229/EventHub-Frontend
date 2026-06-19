@@ -97,6 +97,14 @@ function Navbar() {
 
               <Button
                 color="inherit"
+                component={Link}
+                to="/profile"
+                >
+                Profile
+              </Button>  
+
+              <Button
+                color="inherit"
                 onClick={handleLogout}
               >
                 Logout
