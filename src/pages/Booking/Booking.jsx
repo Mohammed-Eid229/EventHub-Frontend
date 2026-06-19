@@ -36,8 +36,14 @@ function Booking() {
         return;
     }
 
+    const currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+    );
+
     const booking = {
         id: Date.now(),
+        userEmail: currentUser.email,
+
         eventId: event.id,
         title: event.title,
         location: event.location,

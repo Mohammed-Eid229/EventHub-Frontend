@@ -28,6 +28,7 @@ function EventCard({ event }) {
           {event.price} EGP
         </Typography>
 
+
         <Button
             variant="contained"
             component={Link}

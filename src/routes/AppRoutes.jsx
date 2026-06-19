@@ -17,7 +17,7 @@ function AppRoutes() {
       <Route path="/events/:id" element={<EventDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/booking/:id" element={<Booking />} />
+      <Route path="/book-event/:id" element={<Booking />} />
 
       <Route
         path="/bookings"

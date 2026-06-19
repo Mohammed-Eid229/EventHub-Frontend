@@ -14,28 +14,53 @@ function Bookings() {
     useState([]);
 
   useEffect(() => {
-    const data =
-      JSON.parse(
-        localStorage.getItem("bookings")
-      ) || [];
+    const currentUser = JSON.parse(
+     localStorage.getItem("currentUser")
+    );
 
-    setBookings(data);
+    const data =
+    JSON.parse(
+        localStorage.getItem("bookings")
+    ) || [];
+
+    const userBookings = data.filter(
+    (booking) =>
+        booking.userEmail ===
+        currentUser.email
+    );
+
+    setBookings(userBookings);
+
   }, []);
 
   const handleDelete = (id) => {
-    const updatedBookings =
-      bookings.filter(
-        (booking) =>
-          booking.id !== id
-      );
+  const allBookings =
+    JSON.parse(
+      localStorage.getItem("bookings")
+    ) || [];
 
-    setBookings(updatedBookings);
-
-    localStorage.setItem(
-      "bookings",
-      JSON.stringify(updatedBookings)
+  const updatedAllBookings =
+    allBookings.filter(
+      (booking) => booking.id !== id
     );
-  };
+
+  localStorage.setItem(
+    "bookings",
+    JSON.stringify(updatedAllBookings)
+  );
+
+  setBookings(
+    updatedAllBookings.filter(
+      (booking) =>
+        booking.userEmail ===
+        JSON.parse(
+          localStorage.getItem(
+            "currentUser"
+          )
+        ).email
+    )
+  );
+};
 
   if (bookings.length === 0) {
     return (
