@@ -13,7 +13,10 @@ export const registerUser = (userData) => {
     };
   }
 
-  users.push(userData);
+  users.push({
+  ...userData,
+  role: "user",
+});
 
   localStorage.setItem(
     "users",
